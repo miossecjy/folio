@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { LayoutDashboard, Briefcase, Eye, LogOut, User, TrendingUp, Menu, Bitcoin } from "lucide-react";
+import { LayoutDashboard, Briefcase, Eye, LogOut, User, TrendingUp, Menu, Bitcoin, Bell } from "lucide-react";
 import { useState } from "react";
 
 const navItems = [
@@ -16,6 +16,7 @@ const navItems = [
   { to: "/holdings", label: "Holdings", icon: Briefcase },
   { to: "/watchlist", label: "Watchlist", icon: Eye },
   { to: "/crypto", label: "Crypto", icon: Bitcoin },
+  { to: "/alerts", label: "Alerts", icon: Bell },
 ];
 
 export default function Layout() {
