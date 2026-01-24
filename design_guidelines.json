@@ -1,0 +1,147 @@
+{
+  "identity": {
+    "name": "E1",
+    "role": "Creative Designer",
+    "principles": [
+      "Fusion over Imitation",
+      "Emotion First",
+      "Content is King",
+      "Zoom In",
+      "Negative Space",
+      "Contrast"
+    ]
+  },
+  "project_context": {
+    "app_type": "Financial Dashboard",
+    "target_audience": "Individual Investors",
+    "emotional_tone": "Precision, Trust, Elite Performance",
+    "visual_style": "Dark Mode, High Contrast, Neon Accents, Data-Dense"
+  },
+  "typography": {
+    "primary_font": "Manrope",
+    "heading_font": "Chivo",
+    "mono_font": "JetBrains Mono",
+    "import_url": "https://fonts.googleapis.com/css2?family=Chivo:wght@300;400;700;900&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap",
+    "usage": {
+      "headings": "font-chivo tracking-tight font-bold",
+      "body": "font-manrope tracking-normal",
+      "numbers": "font-manrope tabular-nums",
+      "code": "font-mono text-xs"
+    }
+  },
+  "colors": {
+    "palette_name": "Obsidian Ledger",
+    "mode": "dark",
+    "base": {
+      "background": "#050505",
+      "foreground": "#FAFAFA",
+      "card": "#0A0A0A",
+      "card_foreground": "#FFFFFF",
+      "popover": "#0A0A0A",
+      "popover_foreground": "#FFFFFF",
+      "primary": "#7C3AED",
+      "primary_foreground": "#FFFFFF",
+      "secondary": "#18181B",
+      "secondary_foreground": "#FAFAFA",
+      "muted": "#18181B",
+      "muted_foreground": "#A1A1AA",
+      "accent": "#27272A",
+      "accent_foreground": "#FAFAFA",
+      "destructive": "#7F1D1D",
+      "destructive_foreground": "#FEF2F2",
+      "border": "#27272A",
+      "input": "#27272A",
+      "ring": "#7C3AED"
+    },
+    "semantic": {
+      "success": "#10B981",
+      "warning": "#F59E0B",
+      "error": "#EF4444",
+      "info": "#3B82F6",
+      "chart_1": "#7C3AED",
+      "chart_2": "#10B981",
+      "chart_3": "#3B82F6",
+      "chart_4": "#F59E0B",
+      "chart_5": "#EC4899"
+    },
+    "gradients": {
+      "hero_glow": "radial-gradient(circle at center, rgba(124, 58, 237, 0.15) 0%, rgba(5, 5, 5, 0) 70%)",
+      "card_shimmer": "linear-gradient(110deg, #000103 45%, #1e2631 55%, #000103)"
+    }
+  },
+  "layout": {
+    "spacing_scale": "Generous (2x standard)",
+    "container_padding": "p-6 md:p-8 lg:p-12",
+    "grid_system": {
+      "dashboard": "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6",
+      "landing": "grid grid-cols-1 md:grid-cols-12 gap-8"
+    },
+    "border_radius": {
+      "default": "rounded-sm",
+      "card": "rounded-md",
+      "button": "rounded-sm"
+    }
+  },
+  "components": {
+    "buttons": {
+      "style": "sharp edges, high contrast",
+      "hover": "transform -translate-y-0.5 transition-all duration-200"
+    },
+    "cards": {
+      "style": "flat background #0A0A0A, 1px border #27272A",
+      "hover": "border-primary/50 shadow-[0_0_30px_-10px_rgba(124,58,237,0.3)] transition-all duration-300"
+    },
+    "inputs": {
+      "style": "bg-secondary/50 border-transparent focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all"
+    },
+    "charts": {
+      "library": "recharts",
+      "style": "minimalist, thin lines, gradient fills with low opacity"
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": "backdrop-blur-xl bg-black/40 border border-white/10",
+    "tracing_beam": "Use framer-motion to animate borders on active cards",
+    "noise_texture": "opacity-5 pointer-events-none fixed inset-0 z-50 mix-blend-overlay",
+    "glow_effects": "Use shadow-lg shadow-primary/20 for primary actions"
+  },
+  "assets": {
+    "images": [
+      {
+        "category": "hero_background",
+        "url": "https://images.unsplash.com/photo-1641355262431-021a396d4fe5?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "description": "Abstract wavy lines, dark background, good for hero section overlay"
+      },
+      {
+        "category": "concept_art",
+        "url": "https://images.unsplash.com/photo-1573364399591-09bf85ab85a8?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "description": "Black and gold animal illustration, premium feel for 'About' or 'Features'"
+      },
+      {
+        "category": "abstract_data",
+        "url": "https://images.unsplash.com/photo-1760387252509-ecef38b4936e?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "description": "Light trails, speed, data flow"
+      }
+    ],
+    "icons": "lucide-react"
+  },
+  "instructions_to_main_agent": [
+    "Implement the 'Obsidian Ledger' color palette in tailwind.config.js immediately.",
+    "Import the specified Google Fonts in index.css.",
+    "Set the global body background to #050505 and text to #FAFAFA.",
+    "Use the 'Bento' grid layout for the dashboard overview.",
+    "Ensure all financial numbers use 'tabular-nums' for alignment.",
+    "Use 'sonner' for all notifications.",
+    "Do not use gradients for text, only for subtle backgrounds or borders.",
+    "Create a 'Layout' component that handles the sidebar/header structure for the dashboard.",
+    "Use Recharts for the portfolio performance chart.",
+    "Mock Alpha Vantage data if API limits are hit, but structure the service to swap easily."
+  ],
+  "universal_guidelines": [
+    "Avoid 'AI Slop' - no generic centered layouts.",
+    "Dark colors must be rich (tinted), not pure black, except for specific high-contrast areas.",
+    "Use 2-3x more spacing than standard.",
+    "Every interaction needs a micro-animation.",
+    "All interactive elements must have data-testid attributes."
+  ]
+}
