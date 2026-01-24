@@ -347,12 +347,48 @@ def get_mock_quote(symbol: str):
     """Return mock data when API is unavailable"""
     import random
     base_prices = {
+        # US Stocks
         "AAPL": 178.50, "GOOGL": 141.80, "MSFT": 378.90, "AMZN": 178.25,
         "TSLA": 248.50, "META": 505.75, "NVDA": 875.30, "JPM": 195.40,
-        "V": 275.60, "WMT": 165.80
+        "V": 275.60, "WMT": 165.80,
+        # UK Stocks (GBP - shown as pence)
+        "SHEL.LON": 2650.00, "HSBA.LON": 625.40, "BP.LON": 485.20, "VOD.LON": 72.50,
+        "GSK.LON": 1425.00, "AZN.LON": 10250.00, "ULVR.LON": 4125.00, "RIO.LON": 5280.00,
+        # German Stocks (EUR)
+        "BMW.DEX": 98.50, "SAP.DEX": 178.40, "SIE.DEX": 165.20, "VOW3.DEX": 118.60,
+        "ALV.DEX": 245.80, "BAS.DEX": 48.50, "DTE.DEX": 22.80, "ADS.DEX": 185.40,
+        # French Stocks (EUR)
+        "OR.PAR": 425.60, "MC.PAR": 785.40, "SAN.PAR": 92.80, "TTE.PAR": 62.40,
+        "AIR.PAR": 145.20, "BNP.PAR": 58.90,
+        # Dutch Stocks (EUR)
+        "ASML.AMS": 685.40, "PHIA.AMS": 24.80, "INGA.AMS": 14.20, "HEIA.AMS": 92.50,
+        # Swiss Stocks (CHF)
+        "NESN.SWX": 98.50, "ROG.SWX": 265.40, "NOVN.SWX": 92.80, "UBSG.SWX": 25.40,
+        # Italian Stocks (EUR)
+        "ENI.MIL": 14.80, "ISP.MIL": 3.25, "RACE.MIL": 385.60,
+        # Spanish Stocks (EUR)
+        "SAN.MAD": 4.25, "IBE.MAD": 11.80, "TEF.MAD": 4.15,
+        # Nordic Stocks
+        "NOVO-B.CPH": 785.40, "VOLV-B.STO": 265.80, "ERIC-B.STO": 68.40, "EQNR.OSL": 285.60,
     }
+    
+    # Determine currency from symbol
+    currency = "USD"
+    if ".LON" in symbol:
+        currency = "GBP"
+    elif ".DEX" in symbol or ".PAR" in symbol or ".AMS" in symbol or ".MIL" in symbol or ".MAD" in symbol:
+        currency = "EUR"
+    elif ".SWX" in symbol:
+        currency = "CHF"
+    elif ".CPH" in symbol:
+        currency = "DKK"
+    elif ".STO" in symbol:
+        currency = "SEK"
+    elif ".OSL" in symbol:
+        currency = "NOK"
+    
     base_price = base_prices.get(symbol, 100 + random.random() * 200)
-    change = (random.random() - 0.5) * 10
+    change = (random.random() - 0.5) * (base_price * 0.05)  # ±2.5% change
     return {
         "symbol": symbol,
         "price": round(base_price + change, 2),
@@ -361,6 +397,7 @@ def get_mock_quote(symbol: str):
         "volume": random.randint(1000000, 50000000),
         "latest_trading_day": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         "previous_close": round(base_price, 2),
+        "currency": currency,
         "is_mock": True
     }
 
