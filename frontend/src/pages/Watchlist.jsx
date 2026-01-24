@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { getWatchlist, addToWatchlist, removeFromWatchlist, getMultipleQuotes } from "../lib/api";
+import { useLanguage } from "../context/LanguageContext";
 import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Skeleton } from "../components/ui/skeleton";
@@ -26,6 +27,7 @@ import {
 import StockSearch from "../components/StockSearch";
 
 export default function Watchlist() {
+  const { t } = useLanguage();
   const [watchlist, setWatchlist] = useState([]);
   const [quotes, setQuotes] = useState({});
   const [loading, setLoading] = useState(true);
