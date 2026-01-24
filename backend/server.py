@@ -432,29 +432,44 @@ def get_mock_quote(symbol: str):
     """Return mock data when API is unavailable"""
     import random
     base_prices = {
-        # US Stocks
+        # US Stocks - Tech
         "AAPL": 178.50, "GOOGL": 141.80, "MSFT": 378.90, "AMZN": 178.25,
-        "TSLA": 248.50, "META": 505.75, "NVDA": 875.30, "JPM": 195.40,
-        "V": 275.60, "WMT": 165.80,
-        # UK Stocks (GBP - shown as pence)
+        "TSLA": 248.50, "META": 505.75, "NVDA": 875.30, "MSTR": 385.20,
+        "COIN": 245.80, "AMD": 165.40, "INTC": 48.90, "CRM": 285.60,
+        "ORCL": 125.40, "NFLX": 485.20, "PLTR": 22.50,
+        # US Stocks - Finance
+        "JPM": 195.40, "BAC": 35.80, "GS": 385.60, "V": 275.60, "MA": 445.20,
+        # US Stocks - Other
+        "WMT": 165.80, "DIS": 95.40, "KO": 62.50, "PEP": 175.80,
+        "JNJ": 158.40, "PFE": 28.90, "XOM": 105.60, "CVX": 148.90,
+        # UK Stocks (GBP - pence)
         "SHEL.LON": 2650.00, "HSBA.LON": 625.40, "BP.LON": 485.20, "VOD.LON": 72.50,
         "GSK.LON": 1425.00, "AZN.LON": 10250.00, "ULVR.LON": 4125.00, "RIO.LON": 5280.00,
+        "BARC.LON": 185.60, "LLOY.LON": 52.40,
         # German Stocks (EUR)
         "BMW.DEX": 98.50, "SAP.DEX": 178.40, "SIE.DEX": 165.20, "VOW3.DEX": 118.60,
         "ALV.DEX": 245.80, "BAS.DEX": 48.50, "DTE.DEX": 22.80, "ADS.DEX": 185.40,
+        "MBG.DEX": 72.40, "DBK.DEX": 14.80,
         # French Stocks (EUR)
         "OR.PAR": 425.60, "MC.PAR": 785.40, "SAN.PAR": 92.80, "TTE.PAR": 62.40,
-        "AIR.PAR": 145.20, "BNP.PAR": 58.90,
+        "AIR.PAR": 145.20, "BNP.PAR": 58.90, "OPM.PAR": 8.95, "ORA.PAR": 10.85,
+        "SU.PAR": 185.60, "DG.PAR": 105.40, "CAP.PAR": 185.20, "HO.PAR": 145.60,
+        "RNO.PAR": 42.80, "CS.PAR": 32.50, "KER.PAR": 365.40, "RI.PAR": 145.80,
+        "EN.PAR": 32.60, "SGO.PAR": 68.90, "DSY.PAR": 42.80, "STM.PAR": 28.50,
         # Dutch Stocks (EUR)
         "ASML.AMS": 685.40, "PHIA.AMS": 24.80, "INGA.AMS": 14.20, "HEIA.AMS": 92.50,
+        "UNA.AMS": 52.40, "AD.AMS": 28.60,
         # Swiss Stocks (CHF)
         "NESN.SWX": 98.50, "ROG.SWX": 265.40, "NOVN.SWX": 92.80, "UBSG.SWX": 25.40,
+        "ZURN.SWX": 485.60, "ABBN.SWX": 45.80,
         # Italian Stocks (EUR)
-        "ENI.MIL": 14.80, "ISP.MIL": 3.25, "RACE.MIL": 385.60,
+        "ENI.MIL": 14.80, "ISP.MIL": 3.25, "RACE.MIL": 385.60, "UCG.MIL": 32.50, "ENEL.MIL": 6.85,
         # Spanish Stocks (EUR)
-        "SAN.MAD": 4.25, "IBE.MAD": 11.80, "TEF.MAD": 4.15,
+        "SAN.MAD": 4.25, "IBE.MAD": 11.80, "TEF.MAD": 4.15, "ITX.MAD": 42.80, "BBVA.MAD": 9.25,
         # Nordic Stocks
-        "NOVO-B.CPH": 785.40, "VOLV-B.STO": 265.80, "ERIC-B.STO": 68.40, "EQNR.OSL": 285.60,
+        "NOVO-B.CPH": 785.40, "MAERSK-B.CPH": 12500.00, "CARL-B.CPH": 885.60,
+        "VOLV-B.STO": 265.80, "ERIC-B.STO": 68.40, "ATCO-A.STO": 165.40, "SEB-A.STO": 142.80, "HM-B.STO": 165.20,
+        "EQNR.OSL": 285.60, "DNB.OSL": 205.40, "TEL.OSL": 128.60,
     }
     
     # Determine currency from symbol
