@@ -28,7 +28,7 @@ JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION_HOURS = 24
 
 # Alpha Vantage
-ALPHA_VANTAGE_KEY = os.environ.get('ALPHA_VANTAGE_KEY', 'demo')
+ALPHA_VANTAGE_KEY = os.environ.get('ALPHA_VANTAGE_KEY', '5Q8X39SEJSSBSQ1V')
 
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
