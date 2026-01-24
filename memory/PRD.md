@@ -5,10 +5,10 @@ Build a portal through which a user can track their stock portfolio in real time
 
 ## User Requirements
 - Real-time stock tracking with Alpha Vantage API
+- European stocks support (all major exchanges)
 - Crypto tracking with CoinGecko API (separate section)
 - Browser push notifications for price alerts
 - JWT authentication
-- US stocks focus
 
 ## Architecture
 - **Backend**: FastAPI with MongoDB (motor async driver)
@@ -25,19 +25,33 @@ Build a portal through which a user can track their stock portfolio in real time
 - [x] Real-time stock quotes (Alpha Vantage)
 - [x] Portfolio dashboard with summary cards
 - [x] Performance chart (recharts)
+- [x] **European stocks support** (London, Frankfurt, Paris, Amsterdam, Zurich, Milan, Madrid, Nordic exchanges)
+- [x] Color-coded exchange badges in UI
+- [x] Multi-currency support (USD, EUR, GBP, CHF, DKK, SEK, NOK)
 - [x] Crypto holdings CRUD
 - [x] Crypto watchlist management
 - [x] Top cryptocurrencies market view (CoinGecko)
 - [x] Crypto portfolio summary
 - [x] Price alerts for stocks and crypto
 - [x] Browser push notifications when target price hit
-- [x] Alert conditions: above/below target price
-- [x] Active and triggered alerts management
+
+### Supported European Exchanges
+- 🇬🇧 London Stock Exchange (.LON) - GBP
+- 🇩🇪 Frankfurt/Deutsche Börse (.DEX) - EUR
+- 🇫🇷 Euronext Paris (.PAR) - EUR
+- 🇳🇱 Euronext Amsterdam (.AMS) - EUR
+- 🇨🇭 SIX Swiss Exchange (.SWX) - CHF
+- 🇮🇹 Borsa Italiana Milan (.MIL) - EUR
+- 🇪🇸 Bolsa de Madrid (.MAD) - EUR
+- 🇩🇰 Copenhagen (.CPH) - DKK
+- 🇸🇪 Stockholm (.STO) - SEK
+- 🇳🇴 Oslo (.OSL) - NOK
 
 ### UI/UX
 - Dark theme "Obsidian Ledger"
 - Chivo + Manrope fonts
 - Responsive design
+- Exchange color-coding in search & holdings
 - Tabs for Crypto (Holdings, Watchlist, Market)
 - Tabs for Alerts (Active, Triggered)
 
@@ -45,14 +59,11 @@ Build a portal through which a user can track their stock portfolio in real time
 - Auth: /api/auth/register, /api/auth/login, /api/auth/me
 - Holdings: /api/holdings (CRUD)
 - Watchlist: /api/watchlist (CRUD)
-- Stocks: /api/stocks/quote, /api/stocks/search, /api/portfolio/summary
+- Stocks: /api/stocks/quote, /api/stocks/search (with exchange field), /api/portfolio/summary
 - Crypto: /api/crypto/top, /api/crypto/holdings, /api/crypto/watchlist, /api/crypto/portfolio/summary
 - Alerts: /api/alerts (CRUD), /api/alerts/check, /api/alerts/{id}/reset
 
 ## Prioritized Backlog
-
-### P0 (Critical)
-- None
 
 ### P1 (High Priority)
 - Email notifications for alerts (when user offline)
@@ -62,10 +73,10 @@ Build a portal through which a user can track their stock portfolio in real time
 ### P2 (Medium Priority)
 - Multiple portfolios support
 - News integration per stock/crypto
-- Social sharing of portfolio performance
-- Percentage change alerts (in addition to target price)
+- Currency conversion for combined portfolio value
+- Percentage change alerts
 
 ## Next Tasks
-1. Add email notifications via SendGrid/Resend for offline alerts
-2. Implement historical portfolio value tracking with charts
-3. Add dividend tracking for stocks
+1. Add email notifications via SendGrid/Resend
+2. Implement historical portfolio value tracking
+3. Currency conversion for unified portfolio view
