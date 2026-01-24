@@ -89,6 +89,45 @@ class TokenResponse(BaseModel):
     token_type: str = "bearer"
     user: UserResponse
 
+# ============ Crypto Models ============
+
+class CryptoHoldingCreate(BaseModel):
+    coin_id: str
+    symbol: str
+    name: str
+    amount: float
+    buy_price: float
+    buy_date: Optional[str] = None
+
+class CryptoHoldingUpdate(BaseModel):
+    amount: Optional[float] = None
+    buy_price: Optional[float] = None
+    buy_date: Optional[str] = None
+
+class CryptoHoldingResponse(BaseModel):
+    id: str
+    coin_id: str
+    symbol: str
+    name: str
+    amount: float
+    buy_price: float
+    buy_date: str
+    user_id: str
+    created_at: str
+
+class CryptoWatchlistItem(BaseModel):
+    coin_id: str
+    symbol: str
+    name: str
+
+class CryptoWatchlistResponse(BaseModel):
+    id: str
+    coin_id: str
+    symbol: str
+    name: str
+    user_id: str
+    added_at: str
+
 # ============ Auth Helpers ============
 
 def hash_password(password: str) -> str:
