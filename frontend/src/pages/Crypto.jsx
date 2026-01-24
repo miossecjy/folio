@@ -286,8 +286,8 @@ export default function Crypto() {
             <Bitcoin className="w-5 h-5 text-warning" />
           </div>
           <div>
-            <h1 className="font-chivo text-3xl font-bold tracking-tight">Crypto</h1>
-            <p className="text-muted-foreground">Track your cryptocurrency portfolio</p>
+            <h1 className="font-chivo text-3xl font-bold tracking-tight">{t("crypto.title")}</h1>
+            <p className="text-muted-foreground">{t("crypto.subtitle")}</p>
           </div>
         </div>
         <Button
