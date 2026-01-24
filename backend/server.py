@@ -301,6 +301,88 @@ async def remove_from_watchlist(symbol: str, current_user: dict = Depends(get_cu
 stock_cache = {}
 CACHE_TTL = 300  # 5 minutes
 
+# Exchange rate cache
+exchange_rate_cache = {}
+EXCHANGE_RATE_CACHE_TTL = 3600  # 1 hour
+
+async def fetch_exchange_rates(base_currency: str = "USD"):
+    """Fetch exchange rates from frankfurter.app (free, no API key required)"""
+    cache_key = f"rates_{base_currency}"
+    now = datetime.now(timezone.utc).timestamp()
+    
+    if cache_key in exchange_rate_cache:
+        cached_data, cached_time = exchange_rate_cache[cache_key]
+        if now - cached_time < EXCHANGE_RATE_CACHE_TTL:
+            return cached_data
+    
+    try:
+        async with httpx.AsyncClient() as http_client:
+            response = await http_client.get(
+                f"https://api.frankfurter.app/latest",
+                params={"from": base_currency},
+                timeout=10.0
+            )
+            data = response.json()
+            
+            if "rates" in data:
+                # Add base currency with rate 1
+                rates = {base_currency: 1.0, **data["rates"]}
+                exchange_rate_cache[cache_key] = (rates, now)
+                return rates
+    except Exception as e:
+        logger.error(f"Error fetching exchange rates: {e}")
+    
+    # Fallback rates (approximate)
+    return get_fallback_exchange_rates(base_currency)
+
+def get_fallback_exchange_rates(base_currency: str = "USD"):
+    """Fallback exchange rates when API is unavailable"""
+    # Rates relative to USD
+    usd_rates = {
+        "USD": 1.0,
+        "EUR": 0.92,
+        "GBP": 0.79,
+        "CHF": 0.88,
+        "DKK": 6.87,
+        "SEK": 10.45,
+        "NOK": 10.85,
+        "JPY": 149.50,
+        "CAD": 1.36,
+        "AUD": 1.53,
+    }
+    
+    if base_currency == "USD":
+        return usd_rates
+    
+    # Convert to requested base currency
+    base_rate = usd_rates.get(base_currency, 1.0)
+    return {currency: rate / base_rate for currency, rate in usd_rates.items()}
+
+def get_currency_from_symbol(symbol: str) -> str:
+    """Determine currency from stock symbol"""
+    if ".LON" in symbol:
+        return "GBP"
+    elif ".SWX" in symbol:
+        return "CHF"
+    elif ".CPH" in symbol:
+        return "DKK"
+    elif ".STO" in symbol:
+        return "SEK"
+    elif ".OSL" in symbol:
+        return "NOK"
+    elif any(suffix in symbol for suffix in [".DEX", ".PAR", ".AMS", ".MIL", ".MAD", ".BRU"]):
+        return "EUR"
+    return "USD"
+
+async def convert_to_currency(amount: float, from_currency: str, to_currency: str) -> float:
+    """Convert amount from one currency to another"""
+    if from_currency == to_currency:
+        return amount
+    
+    rates = await fetch_exchange_rates(from_currency)
+    rate = rates.get(to_currency, 1.0)
+    return amount * rate
+
 async def fetch_stock_quote(symbol: str):
     cache_key = f"quote_{symbol}"
     now = datetime.now(timezone.utc).timestamp()
