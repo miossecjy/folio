@@ -143,7 +143,7 @@ export default function Layout() {
                     data-testid="settings-menu-item"
                   >
                     <Settings className="w-4 h-4 mr-2" />
-                    Settings
+                    {t("nav.settings")}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
@@ -194,7 +194,7 @@ export default function Layout() {
                   data-testid="mobile-nav-settings"
                 >
                   <Settings className="w-4 h-4" />
-                  Settings
+                  {t("nav.settings")}
                 </NavLink>
               </div>
             </nav>
