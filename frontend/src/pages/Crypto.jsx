@@ -11,6 +11,7 @@ import {
   getTopCryptos,
   searchCryptos,
 } from "../lib/api";
+import { useLanguage } from "../context/LanguageContext";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -50,6 +51,7 @@ import {
 } from "lucide-react";
 
 export default function Crypto() {
+  const { t } = useLanguage();
   const [holdings, setHoldings] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
   const [summary, setSummary] = useState(null);
