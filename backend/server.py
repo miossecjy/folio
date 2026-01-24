@@ -395,13 +395,21 @@ async def search_stocks(query: str):
             
             if "bestMatches" in data:
                 results = []
-                for match in data["bestMatches"][:10]:
+                for match in data["bestMatches"][:15]:
+                    symbol = match.get("1. symbol", "")
+                    region = match.get("4. region", "")
+                    currency = match.get("8. currency", "USD")
+                    
+                    # Determine exchange from symbol suffix
+                    exchange = get_exchange_from_symbol(symbol)
+                    
                     results.append({
-                        "symbol": match.get("1. symbol", ""),
+                        "symbol": symbol,
                         "name": match.get("2. name", ""),
                         "type": match.get("3. type", ""),
-                        "region": match.get("4. region", ""),
-                        "currency": match.get("8. currency", "USD")
+                        "region": region,
+                        "currency": currency,
+                        "exchange": exchange
                     })
                 return results
             elif "Note" in data:
@@ -412,23 +420,93 @@ async def search_stocks(query: str):
         logger.error(f"Error searching stocks: {e}")
         return get_popular_stocks(query)
 
+def get_exchange_from_symbol(symbol: str) -> str:
+    """Determine exchange from symbol suffix"""
+    exchange_map = {
+        ".LON": "London",
+        ".DEX": "Frankfurt",
+        ".PAR": "Paris",
+        ".AMS": "Amsterdam",
+        ".BRU": "Brussels",
+        ".MIL": "Milan",
+        ".MAD": "Madrid",
+        ".SWX": "Zurich",
+        ".VIE": "Vienna",
+        ".STO": "Stockholm",
+        ".HEL": "Helsinki",
+        ".CPH": "Copenhagen",
+        ".OSL": "Oslo",
+        ".LSE": "London",
+    }
+    for suffix, exchange in exchange_map.items():
+        if symbol.endswith(suffix):
+            return exchange
+    return "US"
+
 def get_popular_stocks(query: str = ""):
-    """Return popular stocks when API is unavailable"""
+    """Return popular US and European stocks when API is unavailable"""
     stocks = [
-        {"symbol": "AAPL", "name": "Apple Inc", "type": "Equity", "region": "United States", "currency": "USD"},
-        {"symbol": "GOOGL", "name": "Alphabet Inc", "type": "Equity", "region": "United States", "currency": "USD"},
-        {"symbol": "MSFT", "name": "Microsoft Corporation", "type": "Equity", "region": "United States", "currency": "USD"},
-        {"symbol": "AMZN", "name": "Amazon.com Inc", "type": "Equity", "region": "United States", "currency": "USD"},
-        {"symbol": "TSLA", "name": "Tesla Inc", "type": "Equity", "region": "United States", "currency": "USD"},
-        {"symbol": "META", "name": "Meta Platforms Inc", "type": "Equity", "region": "United States", "currency": "USD"},
-        {"symbol": "NVDA", "name": "NVIDIA Corporation", "type": "Equity", "region": "United States", "currency": "USD"},
-        {"symbol": "JPM", "name": "JPMorgan Chase & Co", "type": "Equity", "region": "United States", "currency": "USD"},
-        {"symbol": "V", "name": "Visa Inc", "type": "Equity", "region": "United States", "currency": "USD"},
-        {"symbol": "WMT", "name": "Walmart Inc", "type": "Equity", "region": "United States", "currency": "USD"},
+        # US Stocks
+        {"symbol": "AAPL", "name": "Apple Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "GOOGL", "name": "Alphabet Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "MSFT", "name": "Microsoft Corporation", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "AMZN", "name": "Amazon.com Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "TSLA", "name": "Tesla Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "META", "name": "Meta Platforms Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "NVDA", "name": "NVIDIA Corporation", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "JPM", "name": "JPMorgan Chase & Co", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        # London Stock Exchange
+        {"symbol": "SHEL.LON", "name": "Shell PLC", "type": "Equity", "region": "United Kingdom", "currency": "GBP", "exchange": "London"},
+        {"symbol": "HSBA.LON", "name": "HSBC Holdings", "type": "Equity", "region": "United Kingdom", "currency": "GBP", "exchange": "London"},
+        {"symbol": "BP.LON", "name": "BP PLC", "type": "Equity", "region": "United Kingdom", "currency": "GBP", "exchange": "London"},
+        {"symbol": "VOD.LON", "name": "Vodafone Group", "type": "Equity", "region": "United Kingdom", "currency": "GBP", "exchange": "London"},
+        {"symbol": "GSK.LON", "name": "GSK PLC", "type": "Equity", "region": "United Kingdom", "currency": "GBP", "exchange": "London"},
+        {"symbol": "AZN.LON", "name": "AstraZeneca PLC", "type": "Equity", "region": "United Kingdom", "currency": "GBP", "exchange": "London"},
+        {"symbol": "ULVR.LON", "name": "Unilever PLC", "type": "Equity", "region": "United Kingdom", "currency": "GBP", "exchange": "London"},
+        {"symbol": "RIO.LON", "name": "Rio Tinto PLC", "type": "Equity", "region": "United Kingdom", "currency": "GBP", "exchange": "London"},
+        # Frankfurt Stock Exchange
+        {"symbol": "BMW.DEX", "name": "BMW AG", "type": "Equity", "region": "Germany", "currency": "EUR", "exchange": "Frankfurt"},
+        {"symbol": "SAP.DEX", "name": "SAP SE", "type": "Equity", "region": "Germany", "currency": "EUR", "exchange": "Frankfurt"},
+        {"symbol": "SIE.DEX", "name": "Siemens AG", "type": "Equity", "region": "Germany", "currency": "EUR", "exchange": "Frankfurt"},
+        {"symbol": "VOW3.DEX", "name": "Volkswagen AG", "type": "Equity", "region": "Germany", "currency": "EUR", "exchange": "Frankfurt"},
+        {"symbol": "ALV.DEX", "name": "Allianz SE", "type": "Equity", "region": "Germany", "currency": "EUR", "exchange": "Frankfurt"},
+        {"symbol": "BAS.DEX", "name": "BASF SE", "type": "Equity", "region": "Germany", "currency": "EUR", "exchange": "Frankfurt"},
+        {"symbol": "DTE.DEX", "name": "Deutsche Telekom AG", "type": "Equity", "region": "Germany", "currency": "EUR", "exchange": "Frankfurt"},
+        {"symbol": "ADS.DEX", "name": "Adidas AG", "type": "Equity", "region": "Germany", "currency": "EUR", "exchange": "Frankfurt"},
+        # Paris Stock Exchange
+        {"symbol": "OR.PAR", "name": "L'Oreal SA", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "MC.PAR", "name": "LVMH", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "SAN.PAR", "name": "Sanofi SA", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "TTE.PAR", "name": "TotalEnergies SE", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "AIR.PAR", "name": "Airbus SE", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "BNP.PAR", "name": "BNP Paribas", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        # Amsterdam Stock Exchange
+        {"symbol": "ASML.AMS", "name": "ASML Holding", "type": "Equity", "region": "Netherlands", "currency": "EUR", "exchange": "Amsterdam"},
+        {"symbol": "PHIA.AMS", "name": "Philips NV", "type": "Equity", "region": "Netherlands", "currency": "EUR", "exchange": "Amsterdam"},
+        {"symbol": "INGA.AMS", "name": "ING Group", "type": "Equity", "region": "Netherlands", "currency": "EUR", "exchange": "Amsterdam"},
+        {"symbol": "HEIA.AMS", "name": "Heineken NV", "type": "Equity", "region": "Netherlands", "currency": "EUR", "exchange": "Amsterdam"},
+        # Swiss Stock Exchange
+        {"symbol": "NESN.SWX", "name": "Nestle SA", "type": "Equity", "region": "Switzerland", "currency": "CHF", "exchange": "Zurich"},
+        {"symbol": "ROG.SWX", "name": "Roche Holding", "type": "Equity", "region": "Switzerland", "currency": "CHF", "exchange": "Zurich"},
+        {"symbol": "NOVN.SWX", "name": "Novartis AG", "type": "Equity", "region": "Switzerland", "currency": "CHF", "exchange": "Zurich"},
+        {"symbol": "UBSG.SWX", "name": "UBS Group AG", "type": "Equity", "region": "Switzerland", "currency": "CHF", "exchange": "Zurich"},
+        # Milan Stock Exchange
+        {"symbol": "ENI.MIL", "name": "Eni SpA", "type": "Equity", "region": "Italy", "currency": "EUR", "exchange": "Milan"},
+        {"symbol": "ISP.MIL", "name": "Intesa Sanpaolo", "type": "Equity", "region": "Italy", "currency": "EUR", "exchange": "Milan"},
+        {"symbol": "RACE.MIL", "name": "Ferrari NV", "type": "Equity", "region": "Italy", "currency": "EUR", "exchange": "Milan"},
+        # Madrid Stock Exchange
+        {"symbol": "SAN.MAD", "name": "Banco Santander", "type": "Equity", "region": "Spain", "currency": "EUR", "exchange": "Madrid"},
+        {"symbol": "IBE.MAD", "name": "Iberdrola SA", "type": "Equity", "region": "Spain", "currency": "EUR", "exchange": "Madrid"},
+        {"symbol": "TEF.MAD", "name": "Telefonica SA", "type": "Equity", "region": "Spain", "currency": "EUR", "exchange": "Madrid"},
+        # Nordic Exchanges
+        {"symbol": "NOVO-B.CPH", "name": "Novo Nordisk", "type": "Equity", "region": "Denmark", "currency": "DKK", "exchange": "Copenhagen"},
+        {"symbol": "VOLV-B.STO", "name": "Volvo AB", "type": "Equity", "region": "Sweden", "currency": "SEK", "exchange": "Stockholm"},
+        {"symbol": "ERIC-B.STO", "name": "Ericsson", "type": "Equity", "region": "Sweden", "currency": "SEK", "exchange": "Stockholm"},
+        {"symbol": "EQNR.OSL", "name": "Equinor ASA", "type": "Equity", "region": "Norway", "currency": "NOK", "exchange": "Oslo"},
     ]
     if query:
         query_lower = query.lower()
-        return [s for s in stocks if query_lower in s["symbol"].lower() or query_lower in s["name"].lower()]
+        return [s for s in stocks if query_lower in s["symbol"].lower() or query_lower in s["name"].lower() or query_lower in s.get("region", "").lower()]
     return stocks
 
 # ============ Portfolio Summary ============
