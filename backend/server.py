@@ -486,6 +486,32 @@ def get_mock_quote(symbol: str):
         "is_mock": True
     }
 
+# ============ Currency Exchange Rates ============
+
+@api_router.get("/currencies")
+async def get_supported_currencies():
+    """Get list of supported currencies"""
+    currencies = [
+        {"code": "USD", "name": "US Dollar", "symbol": "$"},
+        {"code": "EUR", "name": "Euro", "symbol": "€"},
+        {"code": "GBP", "name": "British Pound", "symbol": "£"},
+        {"code": "CHF", "name": "Swiss Franc", "symbol": "CHF"},
+        {"code": "DKK", "name": "Danish Krone", "symbol": "kr"},
+        {"code": "SEK", "name": "Swedish Krona", "symbol": "kr"},
+        {"code": "NOK", "name": "Norwegian Krone", "symbol": "kr"},
+    ]
+    return currencies
+
+@api_router.get("/exchange-rates")
+async def get_exchange_rates(base: str = "USD"):
+    """Get current exchange rates"""
+    rates = await fetch_exchange_rates(base.upper())
+    return {
+        "base": base.upper(),
+        "rates": rates,
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    }
+
 @api_router.get("/stocks/quote/{symbol}")
 async def get_stock_quote(symbol: str):
     return await fetch_stock_quote(symbol.upper())
