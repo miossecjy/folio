@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -9,6 +10,7 @@ import { toast } from "sonner";
 import { TrendingUp, Loader2 } from "lucide-react";
 
 export default function Register() {
+  const { t } = useLanguage();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -62,13 +64,13 @@ export default function Register() {
 
         <Card className="border-border bg-card/50 backdrop-blur-sm">
           <CardHeader className="text-center space-y-1">
-            <CardTitle className="font-chivo text-2xl">Create an account</CardTitle>
-            <CardDescription>Start tracking your investments today</CardDescription>
+            <CardTitle className="font-chivo text-2xl">{t("auth.createAnAccount")}</CardTitle>
+            <CardDescription>{t("auth.startTracking")}</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">{t("auth.name")}</Label>
                 <Input
                   id="name"
                   type="text"
@@ -81,7 +83,7 @@ export default function Register() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t("auth.email")}</Label>
                 <Input
                   id="email"
                   type="email"
@@ -94,7 +96,7 @@ export default function Register() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t("auth.password")}</Label>
                 <Input
                   id="password"
                   type="password"
@@ -115,22 +117,22 @@ export default function Register() {
                 {loading ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Creating account...
+                    {t("auth.creatingAccount")}
                   </>
                 ) : (
-                  "Create Account"
+                  t("auth.createAccount")
                 )}
               </Button>
             </form>
 
             <div className="mt-6 text-center text-sm text-muted-foreground">
-              Already have an account?{" "}
+              {t("auth.alreadyHaveAccount")}{" "}
               <Link
                 to="/login"
                 className="text-primary hover:underline font-medium"
                 data-testid="login-link"
               >
-                Sign in
+                {t("auth.signInLink")}
               </Link>
             </div>
           </CardContent>
