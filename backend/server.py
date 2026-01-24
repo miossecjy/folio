@@ -779,6 +779,126 @@ async def get_crypto_portfolio_summary(current_user: dict = Depends(get_current_
         "holdings": holdings_with_prices
     }
 
+# ============ Price Alerts ============
+
+@api_router.get("/alerts", response_model=List[PriceAlertResponse])
+async def get_price_alerts(current_user: dict = Depends(get_current_user)):
+    """Get all price alerts for the current user"""
+    alerts = await db.price_alerts.find({"user_id": current_user["id"]}, {"_id": 0}).to_list(1000)
+    return alerts
+
+@api_router.post("/alerts", response_model=PriceAlertResponse)
+async def create_price_alert(data: PriceAlertCreate, current_user: dict = Depends(get_current_user)):
+    """Create a new price alert"""
+    alert_id = str(uuid.uuid4())
+    alert = {
+        "id": alert_id,
+        "asset_type": data.asset_type,
+        "symbol": data.symbol.upper(),
+        "name": data.name,
+        "target_price": data.target_price,
+        "condition": data.condition,
+        "coin_id": data.coin_id.lower() if data.coin_id else None,
+        "current_price": None,
+        "triggered": False,
+        "triggered_at": None,
+        "user_id": current_user["id"],
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    await db.price_alerts.insert_one(alert)
+    return PriceAlertResponse(**alert)
+
+@api_router.delete("/alerts/{alert_id}")
+async def delete_price_alert(alert_id: str, current_user: dict = Depends(get_current_user)):
+    """Delete a price alert"""
+    result = await db.price_alerts.delete_one({"id": alert_id, "user_id": current_user["id"]})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Alert not found")
+    return {"message": "Alert deleted"}
+
+@api_router.get("/alerts/check")
+async def check_price_alerts(current_user: dict = Depends(get_current_user)):
+    """Check all active alerts and return triggered ones"""
+    alerts = await db.price_alerts.find({
+        "user_id": current_user["id"],
+        "triggered": False
+    }, {"_id": 0}).to_list(1000)
+    
+    if not alerts:
+        return {"triggered_alerts": [], "active_alerts": []}
+    
+    triggered_alerts = []
+    active_alerts = []
+    
+    # Separate stock and crypto alerts
+    stock_alerts = [a for a in alerts if a["asset_type"] == "stock"]
+    crypto_alerts = [a for a in alerts if a["asset_type"] == "crypto"]
+    
+    # Check stock alerts
+    stock_symbols = list(set(a["symbol"] for a in stock_alerts))
+    stock_prices = {}
+    for symbol in stock_symbols:
+        quote = await fetch_stock_quote(symbol)
+        stock_prices[symbol] = quote.get("price", 0)
+    
+    # Check crypto alerts
+    crypto_ids = list(set(a["coin_id"] for a in crypto_alerts if a["coin_id"]))
+    crypto_prices = {}
+    if crypto_ids:
+        prices_data = await fetch_crypto_prices(crypto_ids)
+        for coin_id in crypto_ids:
+            if coin_id in prices_data:
+                crypto_prices[coin_id] = prices_data[coin_id].get("usd", 0)
+    
+    # Process alerts
+    for alert in alerts:
+        current_price = 0
+        if alert["asset_type"] == "stock":
+            current_price = stock_prices.get(alert["symbol"], 0)
+        else:
+            current_price = crypto_prices.get(alert["coin_id"], 0)
+        
+        # Check if alert is triggered
+        is_triggered = False
+        if alert["condition"] == "above" and current_price >= alert["target_price"]:
+            is_triggered = True
+        elif alert["condition"] == "below" and current_price <= alert["target_price"]:
+            is_triggered = True
+        
+        alert["current_price"] = current_price
+        
+        if is_triggered:
+            # Mark as triggered in database
+            await db.price_alerts.update_one(
+                {"id": alert["id"]},
+                {"$set": {
+                    "triggered": True,
+                    "triggered_at": datetime.now(timezone.utc).isoformat(),
+                    "current_price": current_price
+                }}
+            )
+            alert["triggered"] = True
+            alert["triggered_at"] = datetime.now(timezone.utc).isoformat()
+            triggered_alerts.append(alert)
+        else:
+            active_alerts.append(alert)
+    
+    return {
+        "triggered_alerts": triggered_alerts,
+        "active_alerts": active_alerts
+    }
+
+@api_router.post("/alerts/{alert_id}/reset")
+async def reset_price_alert(alert_id: str, current_user: dict = Depends(get_current_user)):
+    """Reset a triggered alert to active state"""
+    result = await db.price_alerts.update_one(
+        {"id": alert_id, "user_id": current_user["id"]},
+        {"$set": {"triggered": False, "triggered_at": None}}
+    )
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Alert not found")
+    return {"message": "Alert reset"}
+
 # ============ Root ============
 
 @api_router.get("/")
