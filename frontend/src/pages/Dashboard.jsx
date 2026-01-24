@@ -1,9 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { getPortfolioSummary } from "../lib/api";
+import { getPortfolioSummary, getSupportedCurrencies } from "../lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Skeleton } from "../components/ui/skeleton";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
 import {
   TrendingUp,
   TrendingDown,
@@ -13,6 +20,7 @@ import {
   ArrowDownRight,
   RefreshCw,
   Plus,
+  Globe,
 } from "lucide-react";
 import {
   AreaChart,
@@ -23,15 +31,39 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+// Currency symbols mapping
+const currencySymbols = {
+  USD: "$",
+  EUR: "€",
+  GBP: "£",
+  CHF: "CHF ",
+  DKK: "kr ",
+  SEK: "kr ",
+  NOK: "kr ",
+};
+
 export default function Dashboard() {
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [currencies, setCurrencies] = useState([]);
+  const [displayCurrency, setDisplayCurrency] = useState(
+    localStorage.getItem("displayCurrency") || "USD"
+  );
 
-  const fetchSummary = async (showRefresh = false) => {
+  const fetchCurrencies = async () => {
+    try {
+      const response = await getSupportedCurrencies();
+      setCurrencies(response.data);
+    } catch (error) {
+      console.error("Failed to fetch currencies:", error);
+    }
+  };
+
+  const fetchSummary = useCallback(async (showRefresh = false) => {
     if (showRefresh) setRefreshing(true);
     try {
-      const response = await getPortfolioSummary();
+      const response = await getPortfolioSummary(displayCurrency);
       setSummary(response.data);
     } catch (error) {
       console.error("Failed to fetch portfolio summary:", error);
@@ -39,20 +71,29 @@ export default function Dashboard() {
       setLoading(false);
       setRefreshing(false);
     }
-  };
+  }, [displayCurrency]);
+
+  useEffect(() => {
+    fetchCurrencies();
+  }, []);
 
   useEffect(() => {
     fetchSummary();
-    const interval = setInterval(() => fetchSummary(), 60000); // Refresh every minute
+    const interval = setInterval(() => fetchSummary(), 60000);
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchSummary]);
 
-  const formatCurrency = (value) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const handleCurrencyChange = (currency) => {
+    setDisplayCurrency(currency);
+    localStorage.setItem("displayCurrency", currency);
+  };
+
+  const formatCurrency = (value, currency = displayCurrency) => {
+    const symbol = currencySymbols[currency] || "$";
+    return `${symbol}${new Intl.NumberFormat("en-US", {
       minimumFractionDigits: 2,
-    }).format(value);
+      maximumFractionDigits: 2,
+    }).format(value)}`;
   };
 
   const formatPercent = (value) => {
@@ -121,7 +162,26 @@ export default function Dashboard() {
           <h1 className="font-chivo text-3xl font-bold tracking-tight">Dashboard</h1>
           <p className="text-muted-foreground mt-1">Your portfolio at a glance</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          {/* Currency Selector */}
+          <div className="flex items-center gap-2">
+            <Globe className="w-4 h-4 text-muted-foreground" />
+            <Select value={displayCurrency} onValueChange={handleCurrencyChange}>
+              <SelectTrigger className="w-[120px] bg-secondary/50 border-transparent" data-testid="currency-selector">
+                <SelectValue placeholder="Currency" />
+              </SelectTrigger>
+              <SelectContent>
+                {currencies.map((currency) => (
+                  <SelectItem key={currency.code} value={currency.code}>
+                    <span className="flex items-center gap-2">
+                      <span className="font-mono">{currency.symbol}</span>
+                      <span>{currency.code}</span>
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
           <Button
             variant="outline"
             size="sm"
@@ -140,6 +200,16 @@ export default function Dashboard() {
           </Link>
         </div>
       </div>
+
+      {/* Currency Notice */}
+      {displayCurrency !== "USD" && (
+        <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-md">
+          <Globe className="w-4 h-4 text-primary" />
+          <span className="text-sm text-primary">
+            All values converted to {displayCurrency} using live exchange rates
+          </span>
+        </div>
+      )}
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -290,7 +360,7 @@ export default function Dashboard() {
                     fontSize={12}
                     tickLine={false}
                     axisLine={false}
-                    tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+                    tickFormatter={(value) => `${currencySymbols[displayCurrency] || "$"}${(value / 1000).toFixed(0)}k`}
                     domain={["auto", "auto"]}
                   />
                   <Tooltip
@@ -353,7 +423,7 @@ export default function Dashboard() {
                       Price
                     </th>
                     <th className="pb-3 text-sm font-medium text-muted-foreground text-right">
-                      Value
+                      Value ({displayCurrency})
                     </th>
                     <th className="pb-3 text-sm font-medium text-muted-foreground text-right">
                       Gain/Loss
@@ -371,18 +441,25 @@ export default function Dashboard() {
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center">
                             <span className="text-xs font-mono font-bold text-primary">
-                              {holding.symbol.slice(0, 2)}
+                              {holding.symbol.split(".")[0].slice(0, 2)}
                             </span>
                           </div>
-                          <span className="font-mono font-medium">{holding.symbol}</span>
+                          <div>
+                            <span className="font-mono font-medium">{holding.symbol}</span>
+                            {holding.original_currency && holding.original_currency !== displayCurrency && (
+                              <span className="ml-2 text-xs text-muted-foreground">
+                                ({holding.original_currency})
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </td>
                       <td className="py-4 text-right tabular-nums">{holding.shares}</td>
                       <td className="py-4 text-right tabular-nums">
-                        {formatCurrency(holding.current_price)}
+                        {currencySymbols[holding.original_currency] || "$"}{holding.current_price.toFixed(2)}
                       </td>
                       <td className="py-4 text-right tabular-nums font-medium">
-                        {formatCurrency(holding.market_value)}
+                        {formatCurrency(holding.market_value_converted || holding.market_value)}
                       </td>
                       <td className="py-4 text-right">
                         <div
