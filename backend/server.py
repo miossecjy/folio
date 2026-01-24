@@ -594,7 +594,7 @@ def get_exchange_from_symbol(symbol: str) -> str:
 def get_popular_stocks(query: str = ""):
     """Return popular US and European stocks when API is unavailable"""
     stocks = [
-        # US Stocks
+        # US Stocks - Major Tech
         {"symbol": "AAPL", "name": "Apple Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
         {"symbol": "GOOGL", "name": "Alphabet Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
         {"symbol": "MSFT", "name": "Microsoft Corporation", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
@@ -602,7 +602,29 @@ def get_popular_stocks(query: str = ""):
         {"symbol": "TSLA", "name": "Tesla Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
         {"symbol": "META", "name": "Meta Platforms Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
         {"symbol": "NVDA", "name": "NVIDIA Corporation", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "MSTR", "name": "MicroStrategy Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "COIN", "name": "Coinbase Global Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "AMD", "name": "Advanced Micro Devices", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "INTC", "name": "Intel Corporation", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "CRM", "name": "Salesforce Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "ORCL", "name": "Oracle Corporation", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "NFLX", "name": "Netflix Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "PLTR", "name": "Palantir Technologies", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        # US Stocks - Finance
         {"symbol": "JPM", "name": "JPMorgan Chase & Co", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "BAC", "name": "Bank of America", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "GS", "name": "Goldman Sachs", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "V", "name": "Visa Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "MA", "name": "Mastercard Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        # US Stocks - Other
+        {"symbol": "WMT", "name": "Walmart Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "DIS", "name": "Walt Disney Co", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "KO", "name": "Coca-Cola Company", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "PEP", "name": "PepsiCo Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "JNJ", "name": "Johnson & Johnson", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "PFE", "name": "Pfizer Inc", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "XOM", "name": "Exxon Mobil", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
+        {"symbol": "CVX", "name": "Chevron Corporation", "type": "Equity", "region": "United States", "currency": "USD", "exchange": "US"},
         # London Stock Exchange
         {"symbol": "SHEL.LON", "name": "Shell PLC", "type": "Equity", "region": "United Kingdom", "currency": "GBP", "exchange": "London"},
         {"symbol": "HSBA.LON", "name": "HSBC Holdings", "type": "Equity", "region": "United Kingdom", "currency": "GBP", "exchange": "London"},
@@ -612,6 +634,8 @@ def get_popular_stocks(query: str = ""):
         {"symbol": "AZN.LON", "name": "AstraZeneca PLC", "type": "Equity", "region": "United Kingdom", "currency": "GBP", "exchange": "London"},
         {"symbol": "ULVR.LON", "name": "Unilever PLC", "type": "Equity", "region": "United Kingdom", "currency": "GBP", "exchange": "London"},
         {"symbol": "RIO.LON", "name": "Rio Tinto PLC", "type": "Equity", "region": "United Kingdom", "currency": "GBP", "exchange": "London"},
+        {"symbol": "BARC.LON", "name": "Barclays PLC", "type": "Equity", "region": "United Kingdom", "currency": "GBP", "exchange": "London"},
+        {"symbol": "LLOY.LON", "name": "Lloyds Banking Group", "type": "Equity", "region": "United Kingdom", "currency": "GBP", "exchange": "London"},
         # Frankfurt Stock Exchange
         {"symbol": "BMW.DEX", "name": "BMW AG", "type": "Equity", "region": "Germany", "currency": "EUR", "exchange": "Frankfurt"},
         {"symbol": "SAP.DEX", "name": "SAP SE", "type": "Equity", "region": "Germany", "currency": "EUR", "exchange": "Frankfurt"},
@@ -621,36 +645,67 @@ def get_popular_stocks(query: str = ""):
         {"symbol": "BAS.DEX", "name": "BASF SE", "type": "Equity", "region": "Germany", "currency": "EUR", "exchange": "Frankfurt"},
         {"symbol": "DTE.DEX", "name": "Deutsche Telekom AG", "type": "Equity", "region": "Germany", "currency": "EUR", "exchange": "Frankfurt"},
         {"symbol": "ADS.DEX", "name": "Adidas AG", "type": "Equity", "region": "Germany", "currency": "EUR", "exchange": "Frankfurt"},
-        # Paris Stock Exchange
+        {"symbol": "MBG.DEX", "name": "Mercedes-Benz Group", "type": "Equity", "region": "Germany", "currency": "EUR", "exchange": "Frankfurt"},
+        {"symbol": "DBK.DEX", "name": "Deutsche Bank AG", "type": "Equity", "region": "Germany", "currency": "EUR", "exchange": "Frankfurt"},
+        # Paris Stock Exchange (Euronext Paris)
         {"symbol": "OR.PAR", "name": "L'Oreal SA", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
-        {"symbol": "MC.PAR", "name": "LVMH", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "MC.PAR", "name": "LVMH Moet Hennessy", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
         {"symbol": "SAN.PAR", "name": "Sanofi SA", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
         {"symbol": "TTE.PAR", "name": "TotalEnergies SE", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
         {"symbol": "AIR.PAR", "name": "Airbus SE", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
         {"symbol": "BNP.PAR", "name": "BNP Paribas", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "OPM.PAR", "name": "OPmobility SE", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "ORA.PAR", "name": "Orange SA", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "SU.PAR", "name": "Schneider Electric", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "DG.PAR", "name": "Vinci SA", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "CAP.PAR", "name": "Capgemini SE", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "HO.PAR", "name": "Thales SA", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "RNO.PAR", "name": "Renault SA", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "CS.PAR", "name": "AXA SA", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "KER.PAR", "name": "Kering SA", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "RI.PAR", "name": "Pernod Ricard", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "EN.PAR", "name": "Bouygues SA", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "SGO.PAR", "name": "Saint-Gobain", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "DSY.PAR", "name": "Dassault Systemes", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
+        {"symbol": "STM.PAR", "name": "STMicroelectronics", "type": "Equity", "region": "France", "currency": "EUR", "exchange": "Paris"},
         # Amsterdam Stock Exchange
         {"symbol": "ASML.AMS", "name": "ASML Holding", "type": "Equity", "region": "Netherlands", "currency": "EUR", "exchange": "Amsterdam"},
         {"symbol": "PHIA.AMS", "name": "Philips NV", "type": "Equity", "region": "Netherlands", "currency": "EUR", "exchange": "Amsterdam"},
         {"symbol": "INGA.AMS", "name": "ING Group", "type": "Equity", "region": "Netherlands", "currency": "EUR", "exchange": "Amsterdam"},
         {"symbol": "HEIA.AMS", "name": "Heineken NV", "type": "Equity", "region": "Netherlands", "currency": "EUR", "exchange": "Amsterdam"},
+        {"symbol": "UNA.AMS", "name": "Unilever NV", "type": "Equity", "region": "Netherlands", "currency": "EUR", "exchange": "Amsterdam"},
+        {"symbol": "AD.AMS", "name": "Ahold Delhaize", "type": "Equity", "region": "Netherlands", "currency": "EUR", "exchange": "Amsterdam"},
         # Swiss Stock Exchange
         {"symbol": "NESN.SWX", "name": "Nestle SA", "type": "Equity", "region": "Switzerland", "currency": "CHF", "exchange": "Zurich"},
         {"symbol": "ROG.SWX", "name": "Roche Holding", "type": "Equity", "region": "Switzerland", "currency": "CHF", "exchange": "Zurich"},
         {"symbol": "NOVN.SWX", "name": "Novartis AG", "type": "Equity", "region": "Switzerland", "currency": "CHF", "exchange": "Zurich"},
         {"symbol": "UBSG.SWX", "name": "UBS Group AG", "type": "Equity", "region": "Switzerland", "currency": "CHF", "exchange": "Zurich"},
+        {"symbol": "ZURN.SWX", "name": "Zurich Insurance", "type": "Equity", "region": "Switzerland", "currency": "CHF", "exchange": "Zurich"},
+        {"symbol": "ABBN.SWX", "name": "ABB Ltd", "type": "Equity", "region": "Switzerland", "currency": "CHF", "exchange": "Zurich"},
         # Milan Stock Exchange
         {"symbol": "ENI.MIL", "name": "Eni SpA", "type": "Equity", "region": "Italy", "currency": "EUR", "exchange": "Milan"},
         {"symbol": "ISP.MIL", "name": "Intesa Sanpaolo", "type": "Equity", "region": "Italy", "currency": "EUR", "exchange": "Milan"},
         {"symbol": "RACE.MIL", "name": "Ferrari NV", "type": "Equity", "region": "Italy", "currency": "EUR", "exchange": "Milan"},
+        {"symbol": "UCG.MIL", "name": "UniCredit SpA", "type": "Equity", "region": "Italy", "currency": "EUR", "exchange": "Milan"},
+        {"symbol": "ENEL.MIL", "name": "Enel SpA", "type": "Equity", "region": "Italy", "currency": "EUR", "exchange": "Milan"},
         # Madrid Stock Exchange
         {"symbol": "SAN.MAD", "name": "Banco Santander", "type": "Equity", "region": "Spain", "currency": "EUR", "exchange": "Madrid"},
         {"symbol": "IBE.MAD", "name": "Iberdrola SA", "type": "Equity", "region": "Spain", "currency": "EUR", "exchange": "Madrid"},
         {"symbol": "TEF.MAD", "name": "Telefonica SA", "type": "Equity", "region": "Spain", "currency": "EUR", "exchange": "Madrid"},
+        {"symbol": "ITX.MAD", "name": "Inditex SA", "type": "Equity", "region": "Spain", "currency": "EUR", "exchange": "Madrid"},
+        {"symbol": "BBVA.MAD", "name": "BBVA SA", "type": "Equity", "region": "Spain", "currency": "EUR", "exchange": "Madrid"},
         # Nordic Exchanges
         {"symbol": "NOVO-B.CPH", "name": "Novo Nordisk", "type": "Equity", "region": "Denmark", "currency": "DKK", "exchange": "Copenhagen"},
+        {"symbol": "MAERSK-B.CPH", "name": "AP Moller Maersk", "type": "Equity", "region": "Denmark", "currency": "DKK", "exchange": "Copenhagen"},
+        {"symbol": "CARL-B.CPH", "name": "Carlsberg AS", "type": "Equity", "region": "Denmark", "currency": "DKK", "exchange": "Copenhagen"},
         {"symbol": "VOLV-B.STO", "name": "Volvo AB", "type": "Equity", "region": "Sweden", "currency": "SEK", "exchange": "Stockholm"},
         {"symbol": "ERIC-B.STO", "name": "Ericsson", "type": "Equity", "region": "Sweden", "currency": "SEK", "exchange": "Stockholm"},
+        {"symbol": "ATCO-A.STO", "name": "Atlas Copco", "type": "Equity", "region": "Sweden", "currency": "SEK", "exchange": "Stockholm"},
+        {"symbol": "SEB-A.STO", "name": "SEB AB", "type": "Equity", "region": "Sweden", "currency": "SEK", "exchange": "Stockholm"},
+        {"symbol": "HM-B.STO", "name": "H&M Hennes & Mauritz", "type": "Equity", "region": "Sweden", "currency": "SEK", "exchange": "Stockholm"},
         {"symbol": "EQNR.OSL", "name": "Equinor ASA", "type": "Equity", "region": "Norway", "currency": "NOK", "exchange": "Oslo"},
+        {"symbol": "DNB.OSL", "name": "DNB Bank ASA", "type": "Equity", "region": "Norway", "currency": "NOK", "exchange": "Oslo"},
+        {"symbol": "TEL.OSL", "name": "Telenor ASA", "type": "Equity", "region": "Norway", "currency": "NOK", "exchange": "Oslo"},
     ]
     if query:
         query_lower = query.lower()
