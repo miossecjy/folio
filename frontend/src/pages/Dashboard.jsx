@@ -187,8 +187,8 @@ export default function Dashboard() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="font-chivo text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground mt-1">Your complete portfolio at a glance</p>
+          <h1 className="font-chivo text-3xl font-bold tracking-tight">{t("dashboard.title")}</h1>
+          <p className="text-muted-foreground mt-1">{t("dashboard.subtitle")}</p>
         </div>
         <div className="flex items-center gap-3">
           {/* Currency Selector */}
@@ -218,7 +218,7 @@ export default function Dashboard() {
             data-testid="refresh-btn"
           >
             <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? "animate-spin" : ""}`} />
-            Refresh
+            {t("dashboard.refresh")}
           </Button>
         </div>
       </div>
@@ -229,7 +229,7 @@ export default function Dashboard() {
         <Card className="bg-card border-border card-hover" data-testid="total-value-card">
           <CardHeader className="pb-2 flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total Portfolio
+              {t("dashboard.totalPortfolio")}
             </CardTitle>
             <DollarSign className="w-4 h-4 text-primary" />
           </CardHeader>
@@ -250,7 +250,7 @@ export default function Dashboard() {
               <span className="tabular-nums">
                 {formatPercent(totalGainLossPercent)}
               </span>
-              <span className="text-muted-foreground">all time</span>
+              <span className="text-muted-foreground">{t("dashboard.allTime")}</span>
             </div>
           </CardContent>
         </Card>
@@ -259,7 +259,7 @@ export default function Dashboard() {
         <Card className="bg-card border-border card-hover" data-testid="stocks-value-card">
           <CardHeader className="pb-2 flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Stocks
+              {t("dashboard.stocks")}
             </CardTitle>
             <Briefcase className="w-4 h-4 text-primary" />
           </CardHeader>
@@ -268,7 +268,7 @@ export default function Dashboard() {
               {formatCurrency(stockSummary?.total_value || 0)}
             </div>
             <div className="flex items-center gap-2 text-sm mt-1">
-              <span className="text-muted-foreground">{stockSummary?.holdings_count || 0} holdings</span>
+              <span className="text-muted-foreground">{stockSummary?.holdings_count || 0} {t("dashboard.holdings")}</span>
               {stockSummary?.total_gain_loss !== undefined && (
                 <span className={stockSummary.total_gain_loss >= 0 ? "text-gain" : "text-loss"}>
                   {formatPercent(stockSummary.total_gain_loss_percent || 0)}
@@ -282,7 +282,7 @@ export default function Dashboard() {
         <Card className="bg-card border-border card-hover" data-testid="crypto-value-card">
           <CardHeader className="pb-2 flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Crypto
+              {t("dashboard.crypto")}
             </CardTitle>
             <Bitcoin className="w-4 h-4 text-warning" />
           </CardHeader>
@@ -291,7 +291,7 @@ export default function Dashboard() {
               {formatCurrency(cryptoSummary?.total_value || 0)}
             </div>
             <div className="flex items-center gap-2 text-sm mt-1">
-              <span className="text-muted-foreground">{cryptoSummary?.holdings_count || 0} holdings</span>
+              <span className="text-muted-foreground">{cryptoSummary?.holdings_count || 0} {t("dashboard.holdings")}</span>
               {cryptoSummary?.total_gain_loss !== undefined && (
                 <span className={cryptoSummary.total_gain_loss >= 0 ? "text-gain" : "text-loss"}>
                   {formatPercent(cryptoSummary.total_gain_loss_percent || 0)}
@@ -305,7 +305,7 @@ export default function Dashboard() {
         <Card className="bg-card border-border card-hover" data-testid="gain-loss-card">
           <CardHeader className="pb-2 flex flex-row items-center justify-between">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total Gain/Loss
+              {t("dashboard.totalGainLoss")}
             </CardTitle>
             {isPositive ? (
               <TrendingUp className="w-4 h-4 text-success" />
@@ -323,7 +323,7 @@ export default function Dashboard() {
               {formatCurrency(totalGainLoss)}
             </div>
             <div className="text-sm text-muted-foreground mt-1">
-              Cost: {formatCurrency(totalPortfolioCost)}
+              {t("dashboard.cost")}: {formatCurrency(totalPortfolioCost)}
             </div>
           </CardContent>
         </Card>
