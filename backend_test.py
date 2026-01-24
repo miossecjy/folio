@@ -352,6 +352,9 @@ class StockPortfolioAPITester:
         self.test_crypto_watchlist_crud()
         self.test_crypto_portfolio_summary()
         
+        # NEW: Price Alerts functionality tests
+        self.test_price_alerts_crud()
+        
         return True
 
     def print_summary(self):
