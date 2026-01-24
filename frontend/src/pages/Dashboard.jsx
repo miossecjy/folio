@@ -478,11 +478,11 @@ export default function Dashboard() {
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="font-chivo flex items-center gap-2">
               <Briefcase className="w-5 h-5 text-primary" />
-              Stock Holdings
+              {t("dashboard.stockHoldings")}
             </CardTitle>
             <Link to="/holdings">
               <Button variant="ghost" size="sm" data-testid="view-all-stocks-btn">
-                View All
+                {t("dashboard.viewAll")}
               </Button>
             </Link>
           </CardHeader>
@@ -503,7 +503,7 @@ export default function Dashboard() {
                       </div>
                       <div>
                         <p className="font-mono font-medium text-sm">{holding.symbol}</p>
-                        <p className="text-xs text-muted-foreground">{holding.shares} shares</p>
+                        <p className="text-xs text-muted-foreground">{holding.shares} {t("dashboard.shares")}</p>
                       </div>
                     </div>
                     <div className="text-right">
@@ -520,9 +520,9 @@ export default function Dashboard() {
             ) : (
               <div className="text-center py-8 text-muted-foreground">
                 <Briefcase className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                <p className="text-sm">No stock holdings</p>
+                <p className="text-sm">{t("dashboard.noStockHoldings")}</p>
                 <Link to="/holdings">
-                  <Button variant="link" size="sm" className="mt-2">Add stocks</Button>
+                  <Button variant="link" size="sm" className="mt-2">{t("dashboard.addStocks")}</Button>
                 </Link>
               </div>
             )}
@@ -534,11 +534,11 @@ export default function Dashboard() {
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="font-chivo flex items-center gap-2">
               <Bitcoin className="w-5 h-5 text-warning" />
-              Crypto Holdings
+              {t("dashboard.cryptoHoldings")}
             </CardTitle>
             <Link to="/crypto">
               <Button variant="ghost" size="sm" data-testid="view-all-crypto-btn">
-                View All
+                {t("dashboard.viewAll")}
               </Button>
             </Link>
           </CardHeader>
@@ -559,7 +559,7 @@ export default function Dashboard() {
                       </div>
                       <div>
                         <p className="font-mono font-medium text-sm">{holding.symbol}</p>
-                        <p className="text-xs text-muted-foreground">{holding.amount} units</p>
+                        <p className="text-xs text-muted-foreground">{holding.amount} {t("dashboard.units")}</p>
                       </div>
                     </div>
                     <div className="text-right">
@@ -576,9 +576,9 @@ export default function Dashboard() {
             ) : (
               <div className="text-center py-8 text-muted-foreground">
                 <Bitcoin className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                <p className="text-sm">No crypto holdings</p>
+                <p className="text-sm">{t("dashboard.noCryptoHoldings")}</p>
                 <Link to="/crypto">
-                  <Button variant="link" size="sm" className="mt-2">Add crypto</Button>
+                  <Button variant="link" size="sm" className="mt-2">{t("dashboard.addCrypto")}</Button>
                 </Link>
               </div>
             )}
