@@ -1,196 +1,244 @@
 {
   "summary": {
-    "tests_run": 31,
-    "tests_passed": 30,
-    "success_rate": 96.7741935483871
+    "tests_run": 39,
+    "tests_passed": 39,
+    "success_rate": 100.0
   },
   "results": [
     {
       "test": "Health Check",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:02.756462"
+      "timestamp": "2026-01-24T17:34:17.969462"
     },
     {
       "test": "Root Endpoint",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:02.791397"
+      "timestamp": "2026-01-24T17:34:18.007202"
     },
     {
       "test": "User Registration",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:03.056690"
+      "timestamp": "2026-01-24T17:34:18.267640"
     },
     {
       "test": "User Login",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:03.319455"
+      "timestamp": "2026-01-24T17:34:18.530186"
     },
     {
       "test": "Get Current User",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:03.358530"
+      "timestamp": "2026-01-24T17:34:18.566407"
     },
     {
       "test": "Stock Search",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:03.556430"
+      "timestamp": "2026-01-24T17:34:18.759097"
     },
     {
       "test": "Stock Quote",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:03.700708"
+      "timestamp": "2026-01-24T17:34:18.882800"
     },
     {
       "test": "Multiple Quotes",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:03.934860"
+      "timestamp": "2026-01-24T17:34:19.142673"
     },
     {
       "test": "Get Holdings (Empty)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:03.976963"
+      "timestamp": "2026-01-24T17:34:19.177139"
     },
     {
       "test": "Create Holding",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.019201"
+      "timestamp": "2026-01-24T17:34:19.209321"
     },
     {
       "test": "Get Holdings (After Create)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.094600"
+      "timestamp": "2026-01-24T17:34:19.250864"
     },
     {
       "test": "Update Holding",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.131652"
+      "timestamp": "2026-01-24T17:34:19.289057"
     },
     {
       "test": "Delete Holding",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.165695"
+      "timestamp": "2026-01-24T17:34:19.325062"
     },
     {
       "test": "Get Watchlist (Empty)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.201390"
+      "timestamp": "2026-01-24T17:34:19.356700"
     },
     {
       "test": "Add to Watchlist",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.245177"
+      "timestamp": "2026-01-24T17:34:19.396605"
     },
     {
       "test": "Get Watchlist (After Add)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.282040"
+      "timestamp": "2026-01-24T17:34:19.428903"
     },
     {
       "test": "Remove from Watchlist",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.357303"
+      "timestamp": "2026-01-24T17:34:19.464150"
     },
     {
       "test": "Portfolio Summary",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.399395"
+      "timestamp": "2026-01-24T17:34:19.494631"
     },
     {
       "test": "Get Top Cryptos",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.514165"
+      "timestamp": "2026-01-24T17:34:19.635353"
     },
     {
       "test": "Crypto Search",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.634098"
+      "timestamp": "2026-01-24T17:34:19.742476"
     },
     {
       "test": "Crypto Price",
-      "success": false,
-      "details": "Status: 404 (Expected: 200) - Cryptocurrency not found",
-      "timestamp": "2026-01-24T17:19:04.665487"
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2026-01-24T17:34:19.838353"
     },
     {
       "test": "Get Crypto Holdings (Empty)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.702854"
+      "timestamp": "2026-01-24T17:34:19.872939"
     },
     {
       "test": "Create Crypto Holding",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.738244"
+      "timestamp": "2026-01-24T17:34:19.906238"
     },
     {
       "test": "Get Crypto Holdings (After Create)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.771315"
+      "timestamp": "2026-01-24T17:34:19.945575"
     },
     {
       "test": "Update Crypto Holding",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.805952"
+      "timestamp": "2026-01-24T17:34:19.977618"
     },
     {
       "test": "Delete Crypto Holding",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.839088"
+      "timestamp": "2026-01-24T17:34:20.011474"
     },
     {
       "test": "Get Crypto Watchlist (Empty)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.878941"
+      "timestamp": "2026-01-24T17:34:20.047158"
     },
     {
       "test": "Add to Crypto Watchlist",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.926206"
+      "timestamp": "2026-01-24T17:34:20.079720"
     },
     {
       "test": "Get Crypto Watchlist (After Add)",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.959887"
+      "timestamp": "2026-01-24T17:34:20.117314"
     },
     {
       "test": "Remove from Crypto Watchlist",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:04.997374"
+      "timestamp": "2026-01-24T17:34:20.160664"
     },
     {
       "test": "Crypto Portfolio Summary",
       "success": true,
       "details": "Status: 200",
-      "timestamp": "2026-01-24T17:19:05.031414"
+      "timestamp": "2026-01-24T17:34:20.192758"
+    },
+    {
+      "test": "Get Price Alerts (Empty)",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2026-01-24T17:34:20.225664"
+    },
+    {
+      "test": "Create Stock Alert",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2026-01-24T17:34:20.272185"
+    },
+    {
+      "test": "Create Crypto Alert",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2026-01-24T17:34:20.305021"
+    },
+    {
+      "test": "Get Price Alerts (After Create)",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2026-01-24T17:34:20.336993"
+    },
+    {
+      "test": "Check Price Alerts",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2026-01-24T17:34:20.488964"
+    },
+    {
+      "test": "Reset Stock Alert",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2026-01-24T17:34:20.525614"
+    },
+    {
+      "test": "Delete Stock Alert",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2026-01-24T17:34:20.559805"
+    },
+    {
+      "test": "Delete Crypto Alert",
+      "success": true,
+      "details": "Status: 200",
+      "timestamp": "2026-01-24T17:34:20.595923"
     }
   ],
-  "timestamp": "2026-01-24T17:19:05.032085"
+  "timestamp": "2026-01-24T17:34:20.596742"
 }
