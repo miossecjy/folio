@@ -272,10 +272,181 @@ class StockPortfolioAPITester:
         # Remove from watchlist
         self.run_test("Remove from Watchlist", "DELETE", "watchlist/TSLA", 200)
 
+    def test_currency_functionality(self):
+        """Test currency conversion functionality"""
+        print("\n🔍 Testing Currency Functionality...")
+        
+        # Test supported currencies endpoint
+        currencies_response = self.run_test("Get Supported Currencies", "GET", "currencies", 200)
+        if currencies_response:
+            expected_currencies = ["USD", "EUR", "GBP", "CHF", "DKK", "SEK", "NOK"]
+            found_currencies = [c.get("code") for c in currencies_response]
+            
+            for currency in expected_currencies:
+                found = currency in found_currencies
+                self.log_test(f"Currency {currency} Available", found, f"Found: {found_currencies}")
+            
+            # Check if all 7 currencies are present
+            all_present = len(set(expected_currencies) & set(found_currencies)) == 7
+            self.log_test("All 7 Currencies Present", all_present, f"Expected: {expected_currencies}, Found: {found_currencies}")
+        
+        # Test exchange rates endpoint
+        rates_response = self.run_test("Get Exchange Rates (USD base)", "GET", "exchange-rates", 200)
+        if rates_response:
+            rates = rates_response.get("rates", {})
+            base = rates_response.get("base", "")
+            
+            self.log_test("Exchange Rates Has Base Currency", bool(base), f"Base: {base}")
+            self.log_test("Exchange Rates Has Rates", bool(rates), f"Rates count: {len(rates)}")
+            
+            # Check if supported currencies are in rates
+            expected_currencies = ["USD", "EUR", "GBP", "CHF", "DKK", "SEK", "NOK"]
+            for currency in expected_currencies:
+                has_rate = currency in rates
+                rate_value = rates.get(currency, 0)
+                self.log_test(f"Rate for {currency}", has_rate, f"Rate: {rate_value}")
+        
+        # Test exchange rates with different base currencies
+        for base_currency in ["EUR", "GBP", "CHF"]:
+            self.run_test(f"Exchange Rates ({base_currency} base)", "GET", f"exchange-rates?base={base_currency}", 200)
+
     def test_portfolio_summary(self):
-        """Test portfolio summary"""
+        """Test portfolio summary with currency conversion"""
         print("\n🔍 Testing Portfolio Summary...")
-        self.run_test("Portfolio Summary", "GET", "portfolio/summary", 200)
+        
+        # Test basic portfolio summary
+        self.run_test("Portfolio Summary (USD)", "GET", "portfolio/summary", 200)
+        
+        # Test portfolio summary with different display currencies
+        supported_currencies = ["USD", "EUR", "GBP", "CHF", "DKK", "SEK", "NOK"]
+        
+        for currency in supported_currencies:
+            summary_response = self.run_test(
+                f"Portfolio Summary ({currency})", 
+                "GET", 
+                f"portfolio/summary?display_currency={currency}", 
+                200
+            )
+            
+            if summary_response:
+                display_currency = summary_response.get("display_currency", "")
+                self.log_test(f"Display Currency Set to {currency}", display_currency == currency, f"Got: {display_currency}")
+                
+                # Check if holdings have original_currency field
+                holdings = summary_response.get("holdings", [])
+                for holding in holdings[:3]:  # Check first 3 holdings
+                    symbol = holding.get("symbol", "")
+                    original_currency = holding.get("original_currency", "")
+                    market_value_converted = holding.get("market_value_converted")
+                    
+                    self.log_test(f"Holding {symbol} Has Original Currency", bool(original_currency), f"Currency: {original_currency}")
+                    self.log_test(f"Holding {symbol} Has Converted Value", market_value_converted is not None, f"Converted: {market_value_converted}")
+
+    def test_currency_conversion_with_holdings(self):
+        """Test currency conversion with actual holdings"""
+        print("\n🔍 Testing Currency Conversion with Holdings...")
+        
+        # Create holdings with different currencies (US and European stocks)
+        holdings_to_create = [
+            {
+                "symbol": "AAPL",
+                "shares": 10.0,
+                "buy_price": 150.00,
+                "buy_date": "2024-01-15"
+            },
+            {
+                "symbol": "BMW.DEX",  # German stock (EUR)
+                "shares": 5.0,
+                "buy_price": 98.50,
+                "buy_date": "2024-01-15"
+            },
+            {
+                "symbol": "SHEL.LON",  # UK stock (GBP)
+                "shares": 20.0,
+                "buy_price": 26.50,
+                "buy_date": "2024-01-15"
+            }
+        ]
+        
+        created_holding_ids = []
+        
+        # Create holdings
+        for holding_data in holdings_to_create:
+            create_response = self.run_test(
+                f"Create Holding ({holding_data['symbol']})", 
+                "POST", 
+                "holdings", 
+                200, 
+                holding_data
+            )
+            if create_response and 'id' in create_response:
+                created_holding_ids.append(create_response['id'])
+        
+        if created_holding_ids:
+            # Test portfolio summary in different currencies
+            test_currencies = ["USD", "EUR", "GBP"]
+            portfolio_values = {}
+            
+            for currency in test_currencies:
+                summary_response = self.run_test(
+                    f"Portfolio Summary with Mixed Holdings ({currency})", 
+                    "GET", 
+                    f"portfolio/summary?display_currency={currency}", 
+                    200
+                )
+                
+                if summary_response:
+                    total_value = summary_response.get("total_value", 0)
+                    portfolio_values[currency] = total_value
+                    
+                    self.log_test(
+                        f"Portfolio Value in {currency}", 
+                        total_value > 0, 
+                        f"Value: {total_value} {currency}"
+                    )
+                    
+                    # Check that holdings show original currencies
+                    holdings = summary_response.get("holdings", [])
+                    for holding in holdings:
+                        symbol = holding.get("symbol", "")
+                        original_currency = holding.get("original_currency", "")
+                        market_value = holding.get("market_value", 0)
+                        market_value_converted = holding.get("market_value_converted", 0)
+                        
+                        expected_currency = "USD"
+                        if ".DEX" in symbol:
+                            expected_currency = "EUR"
+                        elif ".LON" in symbol:
+                            expected_currency = "GBP"
+                        
+                        self.log_test(
+                            f"{symbol} Original Currency Correct", 
+                            original_currency == expected_currency, 
+                            f"Expected: {expected_currency}, Got: {original_currency}"
+                        )
+                        
+                        # Check conversion happened (values should be different unless same currency)
+                        if currency != original_currency:
+                            conversion_happened = market_value != market_value_converted
+                            self.log_test(
+                                f"{symbol} Currency Conversion Applied", 
+                                conversion_happened, 
+                                f"Original: {market_value}, Converted: {market_value_converted}"
+                            )
+            
+            # Verify that portfolio values are different in different currencies (unless rates are 1:1)
+            if len(portfolio_values) >= 2:
+                currencies = list(portfolio_values.keys())
+                values_different = portfolio_values[currencies[0]] != portfolio_values[currencies[1]]
+                self.log_test(
+                    "Portfolio Values Different in Different Currencies", 
+                    values_different, 
+                    f"USD: {portfolio_values.get('USD', 0)}, EUR: {portfolio_values.get('EUR', 0)}"
+                )
+        
+        # Clean up created holdings
+        for holding_id in created_holding_ids:
+            self.run_test(f"Delete Test Holding", "DELETE", f"holdings/{holding_id}", 200)
 
     def test_crypto_functionality(self):
         """Test crypto-related endpoints"""
