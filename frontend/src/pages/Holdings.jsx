@@ -372,6 +372,9 @@ export default function Holdings() {
           {holdings.map((holding) => {
             const values = calculateHoldingValues(holding);
             const isPositive = values.gainLoss >= 0;
+            const exchange = getExchangeFromSymbol(holding.symbol);
+            const currencySymbol = getCurrencySymbol(holding.symbol);
+            const exchangeColor = exchangeColors[exchange] || "bg-primary/10 text-primary border-primary/20";
 
             return (
               <Card
@@ -383,15 +386,20 @@ export default function Holdings() {
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     {/* Symbol & Name */}
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-md bg-primary/10 border border-primary/20 flex items-center justify-center">
-                        <span className="text-sm font-mono font-bold text-primary">
-                          {holding.symbol.slice(0, 3)}
+                      <div className={`w-12 h-12 rounded-md flex items-center justify-center border ${exchangeColor}`}>
+                        <span className="text-sm font-mono font-bold">
+                          {holding.symbol.split(".")[0].slice(0, 3)}
                         </span>
                       </div>
                       <div>
-                        <h3 className="font-mono font-bold text-lg">{holding.symbol}</h3>
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-mono font-bold text-lg">{holding.symbol}</h3>
+                          <span className={`text-[10px] px-1.5 py-0.5 rounded border ${exchangeColor}`}>
+                            {exchange}
+                          </span>
+                        </div>
                         <p className="text-sm text-muted-foreground">
-                          {holding.shares} shares @ {formatCurrency(holding.buy_price)}
+                          {holding.shares} shares @ {currencySymbol}{holding.buy_price.toFixed(2)}
                         </p>
                       </div>
                     </div>
@@ -403,7 +411,7 @@ export default function Holdings() {
                           Current Price
                         </p>
                         <p className="font-manrope font-semibold tabular-nums">
-                          {formatCurrency(values.currentPrice)}
+                          {currencySymbol}{values.currentPrice.toFixed(2)}
                         </p>
                         <p
                           className={`text-xs tabular-nums ${
@@ -411,7 +419,7 @@ export default function Holdings() {
                           }`}
                         >
                           {values.dayChange >= 0 ? "+" : ""}
-                          {formatCurrency(values.dayChange)} ({formatPercent(values.dayChangePercent)})
+                          {currencySymbol}{Math.abs(values.dayChange).toFixed(2)} ({formatPercent(values.dayChangePercent)})
                         </p>
                       </div>
 
@@ -420,10 +428,10 @@ export default function Holdings() {
                           Market Value
                         </p>
                         <p className="font-manrope font-semibold tabular-nums">
-                          {formatCurrency(values.marketValue)}
+                          {currencySymbol}{values.marketValue.toFixed(2)}
                         </p>
                         <p className="text-xs text-muted-foreground tabular-nums">
-                          Cost: {formatCurrency(values.costBasis)}
+                          Cost: {currencySymbol}{values.costBasis.toFixed(2)}
                         </p>
                       </div>
 
