@@ -198,34 +198,62 @@ class StockPortfolioAPITester:
         # Get initial holdings
         self.run_test("Get Holdings (Empty)", "GET", "holdings", 200)
         
-        # Create holding
-        holding_data = {
+    def test_holdings_crud(self):
+        """Test holdings CRUD operations with European stocks"""
+        print("\n🔍 Testing Holdings CRUD...")
+        
+        # Get initial holdings
+        self.run_test("Get Holdings (Empty)", "GET", "holdings", 200)
+        
+        # Create US holding
+        us_holding_data = {
             "symbol": "AAPL",
             "shares": 10.5,
             "buy_price": 150.00,
             "buy_date": "2024-01-15"
         }
         
-        create_response = self.run_test("Create Holding", "POST", "holdings", 200, holding_data)
-        holding_id = None
-        if create_response and 'id' in create_response:
-            holding_id = create_response['id']
-            print(f"    Created holding ID: {holding_id}")
+        us_create_response = self.run_test("Create US Holding", "POST", "holdings", 200, us_holding_data)
+        us_holding_id = None
+        if us_create_response and 'id' in us_create_response:
+            us_holding_id = us_create_response['id']
+            print(f"    Created US holding ID: {us_holding_id}")
+        
+        # Create European holding (BMW.DEX)
+        eu_holding_data = {
+            "symbol": "BMW.DEX",
+            "shares": 5.0,
+            "buy_price": 98.50,
+            "buy_date": "2024-01-15"
+        }
+        
+        eu_create_response = self.run_test("Create European Holding (BMW.DEX)", "POST", "holdings", 200, eu_holding_data)
+        eu_holding_id = None
+        if eu_create_response and 'id' in eu_create_response:
+            eu_holding_id = eu_create_response['id']
+            print(f"    Created EU holding ID: {eu_holding_id}")
         
         # Get holdings after creation
-        self.run_test("Get Holdings (After Create)", "GET", "holdings", 200)
+        holdings_response = self.run_test("Get Holdings (After Create)", "GET", "holdings", 200)
+        if holdings_response:
+            print(f"    Total holdings: {len(holdings_response)}")
+            for holding in holdings_response:
+                symbol = holding.get('symbol', '')
+                print(f"    - {symbol}")
         
-        # Update holding
-        if holding_id:
+        # Update European holding
+        if eu_holding_id:
             update_data = {
-                "shares": 15.0,
-                "buy_price": 155.00
+                "shares": 7.5,
+                "buy_price": 102.00
             }
-            self.run_test("Update Holding", "PUT", f"holdings/{holding_id}", 200, update_data)
+            self.run_test("Update European Holding", "PUT", f"holdings/{eu_holding_id}", 200, update_data)
         
-        # Delete holding
-        if holding_id:
-            self.run_test("Delete Holding", "DELETE", f"holdings/{holding_id}", 200)
+        # Delete holdings
+        if us_holding_id:
+            self.run_test("Delete US Holding", "DELETE", f"holdings/{us_holding_id}", 200)
+        if eu_holding_id:
+            self.run_test("Delete European Holding", "DELETE", f"holdings/{eu_holding_id}", 200)
 
     def test_watchlist_crud(self):
         """Test watchlist CRUD operations"""
