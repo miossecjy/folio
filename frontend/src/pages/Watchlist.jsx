@@ -235,7 +235,7 @@ export default function Watchlist() {
                       <div>
                         <h3 className="font-mono font-bold text-lg">{item.symbol}</h3>
                         <p className="text-xs text-muted-foreground">
-                          Added {new Date(item.added_at).toLocaleDateString()}
+                          {t("watchlist.addedOn")} {new Date(item.added_at).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
