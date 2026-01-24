@@ -39,3 +39,10 @@ export const removeFromCryptoWatchlist = (coinId) => axios.delete(`${API}/crypto
 
 // Crypto Portfolio API
 export const getCryptoPortfolioSummary = () => axios.get(`${API}/crypto/portfolio/summary`);
+
+// Price Alerts API
+export const getPriceAlerts = () => axios.get(`${API}/alerts`);
+export const createPriceAlert = (data) => axios.post(`${API}/alerts`, data);
+export const deletePriceAlert = (id) => axios.delete(`${API}/alerts/${id}`);
+export const checkPriceAlerts = () => axios.get(`${API}/alerts/check`);
+export const resetPriceAlert = (id) => axios.post(`${API}/alerts/${id}/reset`);
