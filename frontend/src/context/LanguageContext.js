@@ -11,6 +11,7 @@ const translations = {
       crypto: "Crypto",
       alerts: "Alerts",
       logout: "Logout",
+      settings: "Settings",
     },
     // Dashboard
     dashboard: {
