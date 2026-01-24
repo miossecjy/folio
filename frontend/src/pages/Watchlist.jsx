@@ -127,8 +127,8 @@ export default function Watchlist() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="font-chivo text-3xl font-bold tracking-tight">Watchlist</h1>
-          <p className="text-muted-foreground mt-1">Track stocks you're interested in</p>
+          <h1 className="font-chivo text-3xl font-bold tracking-tight">{t("watchlist.title")}</h1>
+          <p className="text-muted-foreground mt-1">{t("watchlist.subtitle")}</p>
         </div>
         <Dialog
           open={dialogOpen}
@@ -140,14 +140,14 @@ export default function Watchlist() {
           <DialogTrigger asChild>
             <Button data-testid="add-watchlist-btn">
               <Plus className="w-4 h-4 mr-2" />
-              Add Stock
+              {t("watchlist.addStock")}
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle className="font-chivo">Add to Watchlist</DialogTitle>
+              <DialogTitle className="font-chivo">{t("watchlist.addToWatchlist")}</DialogTitle>
               <DialogDescription>
-                Search and add a stock to track its price
+                {t("watchlist.searchAndAdd")}
               </DialogDescription>
             </DialogHeader>
             <div className="py-4">
@@ -163,7 +163,7 @@ export default function Watchlist() {
                 onClick={() => setDialogOpen(false)}
                 data-testid="cancel-watchlist-btn"
               >
-                Cancel
+                {t("watchlist.cancel")}
               </Button>
               <Button
                 onClick={handleAdd}
@@ -173,10 +173,10 @@ export default function Watchlist() {
                 {submitting ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Adding...
+                    {t("watchlist.adding")}
                   </>
                 ) : (
-                  "Add"
+                  t("watchlist.add")
                 )}
               </Button>
             </DialogFooter>
@@ -191,13 +191,13 @@ export default function Watchlist() {
             <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
               <Eye className="w-8 h-8 text-primary opacity-50" />
             </div>
-            <h3 className="font-chivo text-lg font-semibold mb-2">Your watchlist is empty</h3>
+            <h3 className="font-chivo text-lg font-semibold mb-2">{t("watchlist.emptyTitle")}</h3>
             <p className="text-muted-foreground text-center max-w-sm mb-4">
-              Add stocks to your watchlist to track their prices without owning them.
+              {t("watchlist.emptyDescription")}
             </p>
             <Button onClick={() => setDialogOpen(true)} data-testid="empty-add-watchlist-btn">
               <Plus className="w-4 h-4 mr-2" />
-              Add Your First Stock
+              {t("watchlist.addFirstStock")}
             </Button>
           </CardContent>
         </Card>
