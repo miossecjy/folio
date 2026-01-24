@@ -607,6 +607,18 @@ async def get_crypto_price(coin_id: str):
             "market_cap": prices[coin_id].get("usd_market_cap", 0),
             "volume_24h": prices[coin_id].get("usd_24h_vol", 0)
         }
+    # Fallback to mock data
+    mock_cryptos = get_mock_top_cryptos()
+    for crypto in mock_cryptos:
+        if crypto["id"] == coin_id:
+            return {
+                "coin_id": coin_id,
+                "price": crypto["current_price"],
+                "change_24h": crypto["price_change_percentage_24h"],
+                "market_cap": crypto["market_cap"],
+                "volume_24h": crypto["total_volume"],
+                "is_mock": True
+            }
     raise HTTPException(status_code=404, detail="Cryptocurrency not found")
 
 # ============ Crypto Holdings ============
