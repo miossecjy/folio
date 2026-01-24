@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Holdings from "./pages/Holdings";
 import Watchlist from "./pages/Watchlist";
+import Crypto from "./pages/Crypto";
 import Layout from "./components/Layout";
 
 const ProtectedRoute = ({ children }) => {
