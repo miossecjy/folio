@@ -19,7 +19,12 @@ export const getMultipleQuotes = (symbols) => axios.get(`${API}/stocks/quotes?sy
 export const searchStocks = (query) => axios.get(`${API}/stocks/search?query=${query}`);
 
 // Portfolio API
-export const getPortfolioSummary = () => axios.get(`${API}/portfolio/summary`);
+export const getPortfolioSummary = (displayCurrency = "USD") => 
+  axios.get(`${API}/portfolio/summary?display_currency=${displayCurrency}`);
+
+// Currency API
+export const getSupportedCurrencies = () => axios.get(`${API}/currencies`);
+export const getExchangeRates = (base = "USD") => axios.get(`${API}/exchange-rates?base=${base}`);
 
 // Crypto Data API
 export const getTopCryptos = () => axios.get(`${API}/crypto/top`);
