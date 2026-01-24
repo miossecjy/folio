@@ -603,6 +603,13 @@ const translations = {
       yes: "Ja",
       no: "Nein",
     },
+    // Settings
+    settings: {
+      title: "Einstellungen",
+      subtitle: "Verwalten Sie Ihre Anwendungseinstellungen",
+      languageTitle: "Sprache",
+      languageDescription: "Wählen Sie Ihre bevorzugte Sprache für die Anwendung",
+    },
   },
   es: {
     // Navigation
@@ -613,6 +620,7 @@ const translations = {
       crypto: "Cripto",
       alerts: "Alertas",
       logout: "Cerrar Sesión",
+      settings: "Configuración",
     },
     // Dashboard
     dashboard: {
