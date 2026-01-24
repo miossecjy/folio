@@ -598,7 +598,11 @@ class StockPortfolioAPITester:
         self.test_european_stocks_specific()
         self.test_holdings_crud()
         self.test_watchlist_crud()
+        
+        # Currency functionality tests
+        self.test_currency_functionality()
         self.test_portfolio_summary()
+        self.test_currency_conversion_with_holdings()
         
         # NEW: Crypto functionality tests
         self.test_crypto_functionality()
