@@ -400,6 +400,13 @@ const translations = {
       yes: "Oui",
       no: "Non",
     },
+    // Settings
+    settings: {
+      title: "Paramètres",
+      subtitle: "Gérez vos préférences d'application",
+      languageTitle: "Langue",
+      languageDescription: "Choisissez votre langue préférée pour l'application",
+    },
   },
   de: {
     // Navigation
@@ -410,6 +417,7 @@ const translations = {
       crypto: "Krypto",
       alerts: "Alarme",
       logout: "Abmelden",
+      settings: "Einstellungen",
     },
     // Dashboard
     dashboard: {
